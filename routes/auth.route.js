@@ -17,7 +17,7 @@ router.post(
       .isLength({ min: 6 })
       .custom((value, { req }) => {
         if (value !== req.body.repassword) {
-          throw new Error("No coinciden las contrase;as");
+          throw new Error("No coinciden las contraseñas");
         }
         return value;
       }),
