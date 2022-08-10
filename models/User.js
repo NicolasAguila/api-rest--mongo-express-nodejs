@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import bcryptjs from 'bcryptjs';
 const {Schema, model } = mongoose;
 
 const userSchema = new Schema({
@@ -16,5 +16,9 @@ const userSchema = new Schema({
         required : true,
     }
 });
+
+userSchema.pre("save", async function(next){
+
+})
 
 export const User = model('user', userSchema);
