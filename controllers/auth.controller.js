@@ -12,9 +12,11 @@ export const register = async (req, res) => {
         user = new User({ email, password });
         await user.save();
 
-        //JWT token
+        //Generar el token JWT
+        const { token, expiresIn } = generateToken(user.id);
+        generateRefreshToken(user.id, res)
 
-        return res.status(201).json({ ok: true });
+        return res.status(201).json({ token, expiresIn });
     } catch (error) {
         console.log(error);
         // Alternativa por defecto mongoose
