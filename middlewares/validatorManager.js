@@ -10,6 +10,15 @@ export const validationResultExpress = (req, res, next) => {
     next()
 };
 
+export const bodyLinkValidator = [
+    body("longLink", "formato link incorrecto")
+    .trim()
+    .notEmpty()
+    ,
+    validationResultExpress
+]
+
+
 export const bodyRegisterValidator = [
     body("email", "Formato de email incorrecto")
         .trim()
@@ -27,6 +36,9 @@ export const bodyRegisterValidator = [
         }),
         validationResultExpress,
 ];
+
+
+
 
 export const bodyLoginValidator = [
     body("email", "Formato de email incorrecto")
