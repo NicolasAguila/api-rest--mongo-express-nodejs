@@ -1,3 +1,4 @@
+import axios from "axios";
 import { validationResult, body } from "express-validator";
 
 export const validationResultExpress = (req, res, next) => {
@@ -12,8 +13,21 @@ export const validationResultExpress = (req, res, next) => {
 
 export const bodyLinkValidator = [
     body("longLink", "formato link incorrecto")
-    .trim()
-    .notEmpty()
+        .trim()
+        .notEmpty()
+        .custom(async (value) => {
+            try {
+                if (!value.startsWith('https://')) {
+                    value = 'https://' + value;
+                }
+                console.log(value);
+                await axios.get(value);
+                return value
+            } catch (error) {
+                //console.log(error);
+                throw new Error("not found longLink 404");
+            }
+        })
     ,
     validationResultExpress
 ]
@@ -34,7 +48,7 @@ export const bodyRegisterValidator = [
             }
             return value;
         }),
-        validationResultExpress,
+    validationResultExpress,
 ];
 
 
@@ -42,10 +56,10 @@ export const bodyRegisterValidator = [
 
 export const bodyLoginValidator = [
     body("email", "Formato de email incorrecto")
-      .trim()
-      .isEmail()
-      .normalizeEmail(),
+        .trim()
+        .isEmail()
+        .normalizeEmail(),
     body("password", "Minimo 6 caracteres").trim().isLength({ min: 6 }),
     validationResultExpress,
-  ];
-  
+];
+
