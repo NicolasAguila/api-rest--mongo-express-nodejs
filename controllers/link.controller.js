@@ -13,6 +13,28 @@ export const getLinks = async (req, res) => {
     }
 };
 
+export const getLink = async (req, res) => {
+    try {
+        const {id} = req.params
+        const link = await Link.findById(id)
+        
+        if(!link)
+        return res.status(404).json({error: 'no existe el link'});
+
+        if(!link.uid.equals(req.uid)) 
+        return res.status(404).json({error: 'no le pertenece ese ID 🤡'});
+
+        return res.json({ link });
+    } catch (error) {
+        console.log(error);
+        if(error.kind === "ObjectId"){
+            return res.status(403).json({ error: 'Formato Id incorrecto' })
+        }
+        return res.status(500).json({ error: 'error de servidor' })
+    }
+}
+
+
 export const createLink = async (req, res) => {
     try {
         let { longLink } = req.body;
@@ -29,3 +51,26 @@ export const createLink = async (req, res) => {
         return res.status(500).json({ error: 'error de servidor' });
     }
 };
+
+export const removeLink = async (req, res) => {
+    try {
+        const {id} = req.params
+        const link = await Link.findById(id)
+        
+        if(!link)
+        return res.status(404).json({error: 'no existe el link'});
+
+        if(!link.uid.equals(req.uid)) 
+        return res.status(404).json({error: 'no le pertenece ese ID 🤡'});
+
+        await link.remove();
+
+        return res.json({ link });
+    } catch (error) {
+        console.log(error);
+        if(error.kind === "ObjectId"){
+            return res.status(403).json({ error: 'Formato Id incorrecto' })
+        }
+        return res.status(500).json({ error: 'error de servidor' })
+    }
+}
