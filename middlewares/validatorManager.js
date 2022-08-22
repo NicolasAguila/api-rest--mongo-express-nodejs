@@ -1,5 +1,5 @@
 import axios from "axios";
-import { validationResult, body } from "express-validator";
+import { validationResult, body, param } from "express-validator";
 
 export const validationResultExpress = (req, res, next) => {
     const errors = validationResult(req);
@@ -10,6 +10,15 @@ export const validationResultExpress = (req, res, next) => {
 
     next()
 };
+
+export const paramLinkValidator = [
+    param("id", "Formato no valido (expressValidator")
+        .trim()
+        .notEmpty()
+        .escape(),
+    validationResultExpress,
+]
+
 
 export const bodyLinkValidator = [
     body("longLink", "formato link incorrecto")

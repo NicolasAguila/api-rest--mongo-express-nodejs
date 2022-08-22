@@ -54,8 +54,9 @@ export const createLink = async (req, res) => {
 
 export const removeLink = async (req, res) => {
     try {
-        const {id} = req.params
-        const link = await Link.findById(id)
+        const {id} = req.params;
+        console.log(id);
+        const link = await Link.findById(id);
         
         if(!link)
         return res.status(404).json({error: 'no existe el link'});
